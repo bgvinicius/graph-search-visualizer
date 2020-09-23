@@ -1,7 +1,10 @@
-package trabfinal;
+package models;
 
 import java.util.*;
 
+/**
+ * A graph class representing graph vertices as integers, using adjacency lists.
+ */
 public class Graph {
     private final HashMap<Integer, ArrayList<Integer>> adjList; //lista de adjacências
     private final HashMap<Integer, String> colors; //um dicionário que mapeia um vértice à sua cor

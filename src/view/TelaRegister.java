@@ -1,18 +1,26 @@
-package View;
+package view;
 
 import java.awt.Color;
 
-public class TelaRegister extends javax.swing.JInternalFrame {
+// TODO: improve variables naming
+public class TelaRegister extends javax.swing.JPanel {
 
+    private javax.swing.JTextField Arestas;
+    private javax.swing.JCheckBox GrafoDirigido;
+    private javax.swing.JButton RegisterButton;
+    private javax.swing.JTextField Vertices;
+    private javax.swing.JLabel exemplo1;
+    private javax.swing.JLabel exemplo2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel texto1;
+    private javax.swing.JLabel texto2;
 
     public TelaRegister() {
         initComponents();
         
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
-
         jPanel3 = new javax.swing.JPanel();
         texto1 = new javax.swing.JLabel();
         texto2 = new javax.swing.JLabel();
@@ -22,12 +30,6 @@ public class TelaRegister extends javax.swing.JInternalFrame {
         exemplo1 = new javax.swing.JLabel();
         exemplo2 = new javax.swing.JLabel();
         GrafoDirigido = new javax.swing.JCheckBox();
-        Menu = new javax.swing.JMenuBar();
-        GraphMaker = new javax.swing.JMenu();
-        newg = new javax.swing.JMenu();
-        register = new javax.swing.JMenu();
-        search = new javax.swing.JMenu();
-
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         texto1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -114,62 +116,8 @@ public class TelaRegister extends javax.swing.JInternalFrame {
                 .addContainerGap(130, Short.MAX_VALUE))
         );
 
-        Menu.setBackground(new java.awt.Color(204, 204, 204));
-
-        GraphMaker.setBackground(new java.awt.Color(255, 255, 255));
-        GraphMaker.setBorder(null);
-        GraphMaker.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/Images/Simbol.jpeg"))); // NOI18N
-        GraphMaker.setText("GraphMaker");
-        GraphMaker.setFont(new java.awt.Font("Sylfaen", 0, 12)); // NOI18N
-        GraphMaker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GraphMakerActionPerformed(evt);
-            }
-        });
-        Menu.add(GraphMaker);
-
-        newg.setBackground(new java.awt.Color(204, 204, 204));
-        newg.setText("Gerar novo grafo");
-        newg.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        newg.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        newg.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newgActionPerformed(evt);
-            }
-        });
-        Menu.add(newg);
-
-        register.setBackground(new java.awt.Color(204, 204, 204));
-        register.setText("Cadastrar novo grafo");
-        register.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        register.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        register.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                registerActionPerformed(evt);
-            }
-        });
-        Menu.add(register);
-
-        search.setBackground(new java.awt.Color(204, 204, 204));
-        search.setText("Iniciar busca");
-        search.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        search.setBackground(Color.gray);
-        search.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                searchStateChanged(evt);
-            }
-        });
-        search.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchActionPerformed(evt);
-            }
-        });
-        Menu.add(search);
-
-        setJMenuBar(Menu);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -178,31 +126,7 @@ public class TelaRegister extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
-    }// </editor-fold>                        
-
-    private void GraphMakerActionPerformed(java.awt.event.ActionEvent evt) {                                           
-
-    }                                          
-
-    private void newgActionPerformed(java.awt.event.ActionEvent evt) {                                     
-        TelaNewGraph novo = new TelaNewGraph();
-        novo.setVisible(true);
-    }                                    
-
-    private void registerActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        new TelaRegister().setVisible(true);
-    }                                        
-
-    private void searchStateChanged(javax.swing.event.ChangeEvent evt) {                                    
-        // TODO add your handling code here:
-    }                                   
-
-    private void searchActionPerformed(java.awt.event.ActionEvent evt) {                                       
-        TelaSearch s = new TelaSearch();
-        s.setVisible(true);
-    }                                      
+    }
 
     private void VerticesActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
@@ -214,23 +138,5 @@ public class TelaRegister extends javax.swing.JInternalFrame {
 
     private void RegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {                                               
         // TODO add your handling code here:
-    }                                              
-
-
-    // Variables declaration - do not modify                     
-    private javax.swing.JTextField Arestas;
-    private javax.swing.JCheckBox GrafoDirigido;
-    private javax.swing.JMenu GraphMaker;
-    private javax.swing.JMenuBar Menu;
-    private javax.swing.JButton RegisterButton;
-    private javax.swing.JTextField Vertices;
-    private javax.swing.JLabel exemplo1;
-    private javax.swing.JLabel exemplo2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JMenu newg;
-    private javax.swing.JMenu register;
-    private javax.swing.JMenu search;
-    private javax.swing.JLabel texto1;
-    private javax.swing.JLabel texto2;
-    // End of variables declaration                   
+    }
 }
