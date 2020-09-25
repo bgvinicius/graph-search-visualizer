@@ -1,7 +1,9 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
 
+// TODO: clear me :(((
 public class MainFrame extends JFrame {
 
     private javax.swing.JMenu logoButton;
@@ -29,7 +31,7 @@ public class MainFrame extends JFrame {
 
         mainPane.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(mainPane);
+//        javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(mainPane);
 
         // TODO: clear this
         // desktop.setLayout(desktopLayout);
@@ -107,10 +109,22 @@ public class MainFrame extends JFrame {
 //            .addComponent(desktop)
 //        );
 
+
         this.setSize(800, 800);
         mainPane.setSize(800, 800);
         getContentPane().add(mainPane);
+        final GraphComponent graphComponent = new GraphComponent();
+        mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.LINE_AXIS));
+        graphComponent.setBackground(new Color(157, 57, 20));
+        mainPane.add(graphComponent);
+        final JPanel jPanel = new JPanel();
+        graphComponent.setPreferredSize(new Dimension(600, 600));
+        jPanel.setBackground(new Color(0, 0, 0));
+        jPanel.setMaximumSize(new Dimension(50, 2000));
+        jPanel.setPreferredSize(new Dimension(50, 800));
+//        jPanel.setMinimumSize(new Dimension(200, 200));
 
+        mainPane.add(jPanel);
         //pack();
     }// </editor-fold>
 

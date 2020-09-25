@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 
 // TODO: remove me, I'm unused :(
 //
@@ -21,7 +22,7 @@ public class TelaNewGraph extends javax.swing.JPanel {
         buttonsContainer = new javax.swing.JToolBar();
         play = new javax.swing.JButton();
 
-        sideBarContainer.setBackground(new java.awt.Color(255, 255, 255));
+//        sideBarContainer.setBackground(new java.awt.Color(255, 255, 255));
 
         buttonsContainer.setOrientation(javax.swing.SwingConstants.VERTICAL);
         buttonsContainer.setRollover(true);
