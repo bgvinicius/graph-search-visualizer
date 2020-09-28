@@ -13,13 +13,24 @@ public class GraphComponent extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         Ellipse2D.Double circle = new Ellipse2D.Double(x, y, 30, 30);
 
-//        g2d.setColor(new Color((int) x, (int) y, 10));
-//        g2d.fill(circle);
+        final Color colorBefore = g2d.getColor();
+        g2d.setColor(Color.WHITE);
+        g2d.fill(circle);
+        g2d.setColor(colorBefore);
         g2d.drawOval((int) x, (int) y, 30, 30);
         g2d.drawString(i + "", (float) x + 12, (float) y + 20);
 //        g2d.drawOval();
 //        g2d.drawOval(0, 0, 50, 50);
 //        g2d.drawLine(400, 400, 500, 500);
+    }
+
+    void drawEdge(Graphics g, int from, int to, double[][] coordenadas) {
+        int x1 = (int) coordenadas[0][from];
+        int x2 = (int) coordenadas[0][to];
+        int y1 = (int) coordenadas[1][from];
+        int y2 = (int) coordenadas[1][to];
+
+        g.drawLine(x1 + 12, y1 + 20, x2 + 12, y2 + 20);
     }
 
     @Override
@@ -31,14 +42,30 @@ public class GraphComponent extends JPanel {
 //        draw(g, 450, 450);
 //        draw(g, 500, 500);
 
-        int n = 7;
+        int n = 5;
         final double[][] coordenadas = gerarCoordenadas(n);
+
+        // scale & reposition points to fit well in the screen
         for (int i = 0; i < n; i++) {
-            double x = (coordenadas[0][i] * 250d) + 300d;
-            double y = (coordenadas[1][i] * 250d) + 300d;
-            System.out.println("x: " + x + " y: " + y);
+            double x = (coordenadas[0][i] * 200d) + 325d;
+            double y = (coordenadas[1][i] * 200d) + 325d;
+            coordenadas[0][i] = x;
+            coordenadas[1][i] = y;
+        }
+
+        drawEdge(g, 0, 1, coordenadas);
+        drawEdge(g, 1, 2, coordenadas);
+        drawEdge(g, 1, 3, coordenadas);
+        drawEdge(g, 3, 4, coordenadas);
+        drawEdge(g, 2, 4, coordenadas);
+
+        // draw points on screen
+        for (int i = 0; i < n; i++) {
+            double x = coordenadas[0][i];
+            double y = coordenadas[1][i];
             draw(g, x, y, i);
         }
+
     }
 
     public static double[][] gerarCoordenadas(int n) {

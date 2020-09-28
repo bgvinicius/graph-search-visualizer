@@ -17,6 +17,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
     }
 
     private void initComponents() {
