@@ -11,10 +11,21 @@ public class Graph<T> {
     //    private final HashMap<Vertex<T>, String> colors; //um dicionário que mapeia um vértice à sua cor
     private final boolean isDirected;
 
-    public Graph(boolean isDirected) {
+    private Graph(boolean isDirected) {
         this.adjList = new HashMap<>();
-//        this.colors = new HashMap<>();
+        //this.colors = new HashMap<>();
         this.isDirected = isDirected;
+    }
+    
+    public Graph(boolean isDirected, int nVertexes) {
+        this(isDirected);
+        //if (nVertexes < 5) 
+            //DÁ ERRO AÍ MERMÃO
+        //else {
+            for (int i = 0; i < nVertexes; i++) {
+                addVertex(new Vertex<T>(i));
+            }
+        //}
     }
 
     public Map<Vertex<T>, List<Vertex<T>>> getAdjList() {
@@ -40,16 +51,18 @@ public class Graph<T> {
     public boolean addEdge(final Vertex<T> v, final Vertex<T> u) {
         if (!(this.adjList.containsKey(v)) || !(this.adjList.containsKey(u)))
             return false;
+        if (this.adjList.get(v).contains(u))
+            return false;
         if (this.adjList.get(v) == null)
             this.adjList.put(v, new ArrayList<>());
         this.adjList.get(v).add(u);
         return true;
     }
 
-    public static void generateRandomGraph() {
+public static void generateRandomGraph() {
         // generate random graph using integers as vertex
-        final Random random = new Random();
-        final Graph<Integer> graph = new Graph<>(random.nextBoolean());
+        
+        /*
         int i;
         final int j = random.nextInt(21) + 5; //gerando entre 5 e 25 vértices aleatoriamente
         final int k = random.nextInt(626); //gerando entre 0 e 625 (25²) arestas aleatoriamente
@@ -58,6 +71,54 @@ public class Graph<T> {
         for (i = 0; i < k; i++) {
             graph.addEdge(new Vertex<>(random.nextInt(26)),
                     new Vertex<>(random.nextInt(26)));
+        }
+        */
+
+        int nVertexes = random.nextInt(21) + 5; //Gerando entre 5 e 25 vértices aleatoriamente
+        int maxEdges;
+
+        if (graph.isDirected()) maxEdges = (int) (nVertexes * (nVertexes - 1));
+        else maxEdges = (int) (nVertexes * (nVertexes - 1) / 2);
+
+        int nEdges = random.nextInt(maxEdges + 1);
+
+        final Random random = new Random();
+        final Graph<Integer> graph = new Graph<>(random.nextBoolean(), nVertexes);
+
+        Vertex<Integer> edges[][] = new Vertex<Integer>[maxEdges][2];
+
+        if (graph.isDirected()) {
+            int i = 0;
+            for (Vertex<Integer> v : graph.adjList.keySet()) {
+                for (Vertex<Integer> u : graph.adjList.keyset()) {
+                    if (!(v.equals(u))) {
+                        edges[i][0] = v;
+                        edges[i][1] = u;
+                        i++;
+                        edges[i][0] = u;
+                        edges[i][1] = v;
+                        i++;
+                    }
+                }
+            }
+        }
+        else {
+            int i = 0;
+            for (Vertex<Integer> v : graph.adjList.keySet()) {
+                for (Vertex<Integer> u : graph.adjList.keyset()) {
+                    if (!(v.equals(u))) {
+                        edges[i][0] = v;
+                        edges[i][1] = u;
+                        i++;
+                    }
+                }
+            }
+        }
+
+        Util.shuffle(edges);
+
+        for (int i = 0; i < nEdges; i++) {
+            graph.addEdge(edges[i][0], edges[i][1]);
         }
     }
 
