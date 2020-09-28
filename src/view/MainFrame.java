@@ -116,11 +116,11 @@ public class MainFrame extends JFrame {
         getContentPane().add(mainPane);
         final GraphComponent graphComponent = new GraphComponent();
         mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.LINE_AXIS));
-        graphComponent.setBackground(new Color(157, 57, 20));
+//        graphComponent.setBackground(new Color(157, 57, 20));
         mainPane.add(graphComponent);
         final JPanel jPanel = new JPanel();
         graphComponent.setPreferredSize(new Dimension(600, 600));
-        jPanel.setBackground(new Color(0, 0, 0));
+//        jPanel.setBackground(new Color(0, 0, 0));
         jPanel.setMaximumSize(new Dimension(50, 2000));
         jPanel.setPreferredSize(new Dimension(50, 800));
 //        jPanel.setMinimumSize(new Dimension(200, 200));
