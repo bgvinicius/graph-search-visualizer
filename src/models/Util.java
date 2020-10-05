@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Util {
     public static Object[] shuffle(Object[] array) {
-        List<Obect[]> list = new ArrayList<>();
+        List<Object[]> list = new ArrayList<>();
         
         for (int i = 0; i < array.length; i++) {
             list.add(array[i]);
