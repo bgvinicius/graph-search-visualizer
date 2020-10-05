@@ -122,15 +122,17 @@ public static void generateRandomGraph() {
         }
     }
 
-    private void visitVertex(Vertex<T> vertex, Set<Vertex<T>> foundVertex, Stack<Vertex<T>> currentPath) {
+    private void visitVertex(Vertex<T> vertex, Set<Vertex<T>> foundVertex, Stack<Vertex<T>> currentPath, List<SearchStep> searchSteps) {
         currentPath.add(vertex);
         foundVertex.add(vertex);
 
         final List<Vertex<T>> adjacentNodes = this.adjList.get(vertex);
 
+        searchSteps.add(new SearchStep(vertex, SearchState.FOUND));
+
         for (final Vertex<T> adjacentNode : adjacentNodes) {
             if (!foundVertex.contains(adjacentNode)) {
-                this.visitVertex(adjacentNode, foundVertex, currentPath);
+                this.visitVertex(adjacentNode, foundVertex, currentPath, searchSteps);
             }
         }
 
@@ -140,17 +142,55 @@ public static void generateRandomGraph() {
 
         System.out.println();
 
+        searchSteps.add(new SearchStep(vertex, SearchState.FINISHED));
+
         currentPath.pop();
     }
 
-    public void dfs() {
+    public List<SearchStep> dfs() {
         final Set<Vertex<T>> foundVertex = new HashSet<>();
+        final List<SearchStep> searchSteps = new LinkedList<>();
+
+        for (final Vertex<T> vertex : this.adjList.keySet()) {
+            v.setSearchState(SearchState.NOT_FOUND);
+        }
 
         for (final Vertex<T> vertex : this.adjList.keySet()) {
             if (!foundVertex.contains(vertex)) {
                 final Stack<Vertex<T>> currentPath = new Stack<>();
-                visitVertex(vertex, foundVertex, currentPath);
+                visitVertex(vertex, foundVertex, currentPath, searchSteps);
             }
         }
+
+        return searchSteps;
+    }
+
+    public List<SearchStep> bfs(Vertex<T> source) {
+        final Set<Vertex<T>> foundVertex = new HashSet<>();
+        final List<SearchStep> searchSteps = new LinkedList<>();
+
+        for (final Vertex<T> vertex : this.adjList.keySet()) {
+            v.setSearchState(SearchState.NOT_FOUND);
+        }
+
+        final Queue<Vertex<T>> pQueue = new PriorityQueue<>();
+
+        pQueue.offer(source);
+        searchSteps.add(new SearchStep(source, SearchState.FOUND));
+
+        while (pQueue.peek() != null) {
+            final Vertex<T> vertex = pQueue.poll();
+            foundVertex.add(vertex);
+            for (Vertex<T> adjVertex : this.adjList.get(vertex)) {
+                if (!(foundVertex.contains(adjVertex))) {
+                    foundVertex.add(adjVertex);
+                    pQueue.offer(adjVertex);
+                    searchSteps.add(new SearchStep(adjVertex, SearchState.FOUND));
+                }
+            }
+            searchSteps.add(new SearchStep(vertex, FINISHED));
+        }
+
+        return searchSteps;
     }
 }
