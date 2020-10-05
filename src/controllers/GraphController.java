@@ -4,11 +4,11 @@ public class GraphController {
     Graph g = new Graph();
 
     Vertex getVertex(){
-        return g.Vertex;
+        return g.keySet;
     }
 
-    getEdges(){
-        return g.adjList;
+    List<T> getEdges(Vertex v){
+        return v.adjList;
     }
 
     private void insertVertex(Vertex v){     
