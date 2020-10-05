@@ -3,12 +3,14 @@ package controllers;
 public class GraphController {
     Graph g = new Graph();
 
-    Vertex getVertex(){
-        return g.keySet;
+    Set<Vertex<T>> getVertex(){
+        ArrayList a = new HashMap();
+        a.get(getKeyList());
+        return a;    
     }
 
-    List<T> getEdges(Vertex v){
-        return v.adjList;
+    List<Vertex<T>> getEdges(Vertex v){
+        return g.getAjdList().get(v);
     }
 
     private void insertVertex(Vertex v){     

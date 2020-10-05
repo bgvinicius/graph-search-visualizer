@@ -32,6 +32,10 @@ public class Graph<T> {
         return this.adjList;
     }
 
+    public Set<Vertex<T>> getKeyList(){
+        return adjList.keySet();
+    }
+
 //    public HashMap getColors() {
 //        return this.colors;
 //    }
