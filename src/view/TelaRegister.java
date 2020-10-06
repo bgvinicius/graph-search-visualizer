@@ -1,27 +1,38 @@
 package view;
 
-import java.awt.Color;
+import controllers.GraphController;
+import models.Vertex;
+import view.graph.GraphComponent;
+
+import javax.swing.*;
+import java.awt.*;
 
 // TODO: improve variables naming
 public class TelaRegister extends javax.swing.JPanel {
 
+    private final GraphController graphController;
     private javax.swing.JTextField Arestas;
     private javax.swing.JCheckBox GrafoDirigido;
     private javax.swing.JButton RegisterButton;
     private javax.swing.JTextField Vertices;
     private javax.swing.JLabel exemplo1;
     private javax.swing.JLabel exemplo2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel formContainer;
     private javax.swing.JLabel texto1;
     private javax.swing.JLabel texto2;
+    private JPanel container;
+    private JLabel orientacao;
+    private GraphComponent graphComponent;
 
-    public TelaRegister() {
+    public TelaRegister(GraphController graphController) {
+        this.graphController = graphController;
         initComponents();
-        
     }
 
     private void initComponents() {
-        jPanel3 = new javax.swing.JPanel();
+        this.setPreferredSize(new Dimension(1200, 1200));
+        container = new JPanel();
+        formContainer = new javax.swing.JPanel();
         texto1 = new javax.swing.JLabel();
         texto2 = new javax.swing.JLabel();
         Vertices = new javax.swing.JTextField();
@@ -29,8 +40,9 @@ public class TelaRegister extends javax.swing.JPanel {
         RegisterButton = new javax.swing.JButton();
         exemplo1 = new javax.swing.JLabel();
         exemplo2 = new javax.swing.JLabel();
+        orientacao = new JLabel();
         GrafoDirigido = new javax.swing.JCheckBox();
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        formContainer.setBackground(new java.awt.Color(255, 255, 255));
 
         texto1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         texto1.setText("Digite os vértices do grafo: ");
@@ -59,84 +71,64 @@ public class TelaRegister extends javax.swing.JPanel {
         });
 
         exemplo1.setFont(new java.awt.Font("Times New Roman", 0, 11)); // NOI18N
-        exemplo1.setText("ex: 1, 2, 3, 4");
+        exemplo1.setText("ex: 1 2 3 4");
 
         exemplo2.setFont(new java.awt.Font("Times New Roman", 0, 11)); // NOI18N
-        exemplo2.setText("ex: (1, 2), (1, 3), (2, 4)");
+        exemplo2.setText("ex: (1 2) (1 3) (2 4)");
+
+        orientacao.setFont(new java.awt.Font("Times New Roman", 0, 11)); // NOI18N
+        orientacao.setText("Pressione 'Cadastrar' para exibir o grafo registrado.");
 
         GrafoDirigido.setBackground(new java.awt.Color(255, 255, 255));
         GrafoDirigido.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         GrafoDirigido.setText("Grafo Dirigido");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
-                                .addComponent(exemplo1))
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(texto2)
-                                .addComponent(texto1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Vertices)
-                                .addComponent(Arestas, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(exemplo2))
-                            .addComponent(GrafoDirigido)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(RegisterButton)))
-                .addGap(184, 184, 184))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(GrafoDirigido)
-                .addGap(18, 18, 18)
-                .addComponent(texto1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(exemplo1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Vertices, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(texto2)
-                .addGap(3, 3, 3)
-                .addComponent(exemplo2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Arestas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(RegisterButton)
-                .addContainerGap(130, Short.MAX_VALUE))
-        );
+        formContainer.setPreferredSize(new Dimension(350, 300));
+        formContainer.setMaximumSize(new Dimension(350, 300));
+        formContainer.setLayout(new BoxLayout(formContainer, BoxLayout.PAGE_AXIS));
+        formContainer.add(GrafoDirigido);
+        formContainer.add(texto1);
+        formContainer.add(exemplo1);
+        formContainer.add(Vertices);
+        formContainer.add(texto2);
+        formContainer.add(exemplo2);
+        formContainer.add(Arestas);
+        formContainer.add(orientacao);
+        formContainer.add(RegisterButton);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        container.setLayout(new BoxLayout(container, BoxLayout.LINE_AXIS));
+        container.add(formContainer);
+        container.setPreferredSize(new Dimension(1200, 1200));
+        graphController.emptyGraph(false);
+        graphComponent = new GraphComponent(graphController);
+        container.add(graphComponent);
+        this.add(container);
     }
 
-    private void VerticesActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    private void VerticesActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }                                        
+    }
 
-    private void ArestasActionPerformed(java.awt.event.ActionEvent evt) {                                        
+    private void ArestasActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }                                       
+    }
 
-    private void RegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {                                               
-        // TODO add your handling code here:
+    private void RegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        final String[] vertices = Vertices.getText().split(" ");
+        this.graphController.emptyGraph(GrafoDirigido.isSelected());
+        for (String vertex : vertices) {
+            final int vertexNumber = Integer.parseInt(vertex);
+            this.graphController.addVertex(new Vertex<>(vertexNumber));
+        }
+        
+        graphComponent.initialize();
+        graphComponent.repaint();
+//        graphComponent.paintComponent(graphComponent.getGraphics());
+//        final GraphComponent graphComponent = new GraphComponent(graphController);
+//        graphComponent.setVisible(true);
+//        graphComponent.setSize(600, 600);
+//        graphComponent.setPreferredSize(new Dimension(600, 600));
+//        container.add(graphComponent);
+//        Arestas.getText();
     }
 }

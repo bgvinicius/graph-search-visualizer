@@ -11,25 +11,37 @@ public class Graph<T> {
     //    private final HashMap<Vertex<T>, String> colors; //um dicionário que mapeia um vértice à sua cor
     private final boolean isDirected;
 
-    private Graph(boolean isDirected) {
+    public Graph(boolean isDirected) {
         this.adjList = new HashMap<>();
         //this.colors = new HashMap<>();
         this.isDirected = isDirected;
     }
     
-    public Graph(boolean isDirected, int nVertexes) {
-        this(isDirected);
-        //if (nVertexes < 5) 
-            //DÁ ERRO AÍ MERMÃO
-        //else {
-            for (int i = 0; i < nVertexes; i++) {
-                addVertex(new Vertex<T>(i));
-            }
-        //}
-    }
+//    public Graph(boolean isDirected, int nVertexes) {
+//        this(isDirected);
+//        //if (nVertexes < 5)
+//            //DÁ ERRO AÍ MERMÃO
+//        //else {
+//            for (int i = 0; i < nVertexes; i++) {
+//                addVertex(new Vertex<>(i));
+//            }
+//        //}
+//    }
 
     public Map<Vertex<T>, List<Vertex<T>>> getAdjList() {
         return this.adjList;
+    }
+
+    public Iterable<Vertex<T>> getVertices() {
+        return this.adjList.keySet();
+    }
+
+    public int numberOfVertices() {
+        return this.adjList.size();
+    }
+
+    public Iterable<Vertex<T>> getAdjacentVertices(Vertex<T> vertex) {
+        return this.adjList.getOrDefault(vertex, new ArrayList<>());
     }
 
 //    public HashMap getColors() {
@@ -43,7 +55,7 @@ public class Graph<T> {
     public boolean addVertex(Vertex<T> vertex) {
         if (this.adjList.keySet().size() >= 25)
             return false;
-        this.adjList.put(vertex, null);
+        this.adjList.put(vertex, new ArrayList<>());
 //        this.colors.put(this.adjList.keySet().size(), "branco");
         return true;
     }
@@ -51,17 +63,18 @@ public class Graph<T> {
     public boolean addEdge(final Vertex<T> v, final Vertex<T> u) {
         if (!(this.adjList.containsKey(v)) || !(this.adjList.containsKey(u)))
             return false;
-        if (this.adjList.get(v).contains(u))
-            return false;
         if (this.adjList.get(v) == null)
             this.adjList.put(v, new ArrayList<>());
+        if (this.adjList.get(v).contains(u))
+            return false;
         this.adjList.get(v).add(u);
         return true;
     }
 
-public static void generateRandomGraph() {
+    public static Graph<Integer> generateRandomGraph() {
         // generate random graph using integers as vertex
-        
+        final Random random = new Random();
+        final Graph<Integer> graph = new Graph<>(random.nextBoolean());
         /*
         int i;
         final int j = random.nextInt(21) + 5; //gerando entre 5 e 25 vértices aleatoriamente
@@ -77,88 +90,90 @@ public static void generateRandomGraph() {
         int nVertexes = random.nextInt(21) + 5; //Gerando entre 5 e 25 vértices aleatoriamente
         int maxEdges;
 
+        for (int i = 0; i < nVertexes; i++) {
+            graph.addVertex(new Vertex<>(i));
+        }
+
         if (graph.isDirected()) maxEdges = (int) (nVertexes * (nVertexes - 1));
         else maxEdges = (int) (nVertexes * (nVertexes - 1) / 2);
 
         int nEdges = random.nextInt(maxEdges + 1);
 
-        final Random random = new Random();
-        final Graph<Integer> graph = new Graph<>(random.nextBoolean(), nVertexes);
-
-        Vertex<Integer> edges[][] = new Vertex<Integer>[maxEdges][2];
+        List<List<Vertex<Integer>>> edges = new ArrayList<>();
+//        Vertex<Integer> edges[][] = new Vertex<>[maxEdges][2];
 
         if (graph.isDirected()) {
-            int i = 0;
             for (Vertex<Integer> v : graph.adjList.keySet()) {
-                for (Vertex<Integer> u : graph.adjList.keyset()) {
+                for (Vertex<Integer> u : graph.adjList.keySet()) {
                     if (!(v.equals(u))) {
-                        edges[i][0] = v;
-                        edges[i][1] = u;
-                        i++;
-                        edges[i][0] = u;
-                        edges[i][1] = v;
-                        i++;
+
+                        final List<Vertex<Integer>> pair = new ArrayList<>();
+                        pair.add(v);
+                        pair.add(u);
+                        edges.add(pair);
                     }
                 }
             }
         }
         else {
-            int i = 0;
             for (Vertex<Integer> v : graph.adjList.keySet()) {
-                for (Vertex<Integer> u : graph.adjList.keyset()) {
+                for (Vertex<Integer> u : graph.adjList.keySet()) {
                     if (!(v.equals(u))) {
-                        edges[i][0] = v;
-                        edges[i][1] = u;
-                        i++;
+
+                        final List<Vertex<Integer>> pair1 = new ArrayList<>();
+                        pair1.add(v);
+                        pair1.add(u);
+                        edges.add(pair1);
+
+                        final List<Vertex<Integer>> pair2 = new ArrayList<>();
+                        pair2.add(u);
+                        pair2.add(v);
+                        edges.add(pair2);
                     }
                 }
             }
         }
 
-        Util.shuffle(edges);
+        Collections.shuffle(edges);
 
         for (int i = 0; i < nEdges; i++) {
-            graph.addEdge(edges[i][0], edges[i][1]);
+            final List<Vertex<Integer>> pair = edges.get(i);
+
+            graph.addEdge(pair.get(0), pair.get(1));
         }
+
+        return graph;
     }
 
-    private void visitVertex(Vertex<T> vertex, Set<Vertex<T>> foundVertex, Stack<Vertex<T>> currentPath, List<SearchStep> searchSteps) {
-        currentPath.add(vertex);
+    private void visitVertex(Vertex<T> vertex, Set<Vertex<T>> foundVertex, List<SearchStep<T>> searchSteps) {
         foundVertex.add(vertex);
 
         final List<Vertex<T>> adjacentNodes = this.adjList.get(vertex);
 
-        searchSteps.add(new SearchStep(vertex, SearchState.FOUND));
+        searchSteps.add(new SearchStep<>(vertex, SearchState.FOUND));
 
         for (final Vertex<T> adjacentNode : adjacentNodes) {
             if (!foundVertex.contains(adjacentNode)) {
-                this.visitVertex(adjacentNode, foundVertex, currentPath, searchSteps);
+                this.visitVertex(adjacentNode, foundVertex, searchSteps);
             }
-        }
-
-        for (Vertex<T> pathNodes : currentPath) {
-            System.out.print(pathNodes + " -> ");
         }
 
         System.out.println();
 
-        searchSteps.add(new SearchStep(vertex, SearchState.FINISHED));
-
-        currentPath.pop();
+        searchSteps.add(new SearchStep<>(vertex, SearchState.FINISHED));
     }
 
-    public List<SearchStep> dfs() {
+    public List<SearchStep<T>> dfs() {
         final Set<Vertex<T>> foundVertex = new HashSet<>();
-        final List<SearchStep> searchSteps = new LinkedList<>();
+        final List<SearchStep<T>> searchSteps = new LinkedList<>();
 
         for (final Vertex<T> vertex : this.adjList.keySet()) {
-            v.setSearchState(SearchState.NOT_FOUND);
+            vertex.setSearchState(SearchState.NOT_FOUND);
         }
 
         for (final Vertex<T> vertex : this.adjList.keySet()) {
             if (!foundVertex.contains(vertex)) {
-                final Stack<Vertex<T>> currentPath = new Stack<>();
-                visitVertex(vertex, foundVertex, currentPath, searchSteps);
+                visitVertex(vertex, foundVertex, searchSteps);
             }
         }
 
@@ -170,7 +185,7 @@ public static void generateRandomGraph() {
         final List<SearchStep> searchSteps = new LinkedList<>();
 
         for (final Vertex<T> vertex : this.adjList.keySet()) {
-            v.setSearchState(SearchState.NOT_FOUND);
+            vertex.setSearchState(SearchState.NOT_FOUND);
         }
 
         final Queue<Vertex<T>> pQueue = new PriorityQueue<>();
@@ -188,7 +203,7 @@ public static void generateRandomGraph() {
                     searchSteps.add(new SearchStep(adjVertex, SearchState.FOUND));
                 }
             }
-            searchSteps.add(new SearchStep(vertex, FINISHED));
+            searchSteps.add(new SearchStep(vertex, SearchState.FINISHED));
         }
 
         return searchSteps;

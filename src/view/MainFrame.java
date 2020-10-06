@@ -1,20 +1,25 @@
 package view;
 
+import controllers.GraphController;
+import view.graph.GraphComponent;
+
 import javax.swing.*;
 import java.awt.*;
 
 // TODO: clear me :(((
 public class MainFrame extends JFrame {
 
-    private javax.swing.JMenu logoButton;
+    private javax.swing.JButton logoButton;
     private javax.swing.JMenuBar menu;
     private javax.swing.JPanel mainPane;
     private javax.swing.JButton newGraphButton;
     private javax.swing.JButton registerButton;
     private javax.swing.JButton searchButton;
+    private final GraphController graphController;
 
 
     public MainFrame() {
+        this.graphController = new GraphController();
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -23,7 +28,7 @@ public class MainFrame extends JFrame {
     private void initComponents() {
         mainPane = new javax.swing.JPanel();
         menu = new javax.swing.JMenuBar();
-        logoButton = new javax.swing.JMenu();
+        logoButton = new javax.swing.JButton();
         newGraphButton = new javax.swing.JButton();
         registerButton = new javax.swing.JButton();
         searchButton = new javax.swing.JButton();
@@ -54,7 +59,6 @@ public class MainFrame extends JFrame {
         logoButton.setFont(new java.awt.Font("Sylfaen", 0, 12)); // NOI18N
         logoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.out.println("ok.");
                 GraphMakerActionPerformed(evt);
             }
         });
@@ -114,7 +118,7 @@ public class MainFrame extends JFrame {
         this.setSize(800, 800);
         mainPane.setSize(800, 800);
         getContentPane().add(mainPane);
-        final GraphComponent graphComponent = new GraphComponent();
+        final GraphComponent graphComponent = new GraphComponent(graphController);
         mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.LINE_AXIS));
 //        graphComponent.setBackground(new Color(157, 57, 20));
         mainPane.add(graphComponent);
@@ -135,8 +139,8 @@ public class MainFrame extends JFrame {
 
     //ao clicar no menu, abre uma nova tela de cadastro
     private void registerActionPerformed(java.awt.event.ActionEvent evt) {
-        TelaRegister reg = new TelaRegister();
-        reg.setVisible(true);
+        TelaRegister reg = new TelaRegister(this.graphController);
+//        reg.setVisible(true);
         mainPane.removeAll();
         mainPane.add(reg);
         pack();
@@ -144,7 +148,8 @@ public class MainFrame extends JFrame {
 
     //ao clicar no menu, abre uma nova tela de buscar
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {
-        TelaSearch s = new TelaSearch();
+        TelaSearch s = new TelaSearch(this.graphController);
+//        s.setVisible(true);
         mainPane.removeAll();
         mainPane.add(s);
         pack();
@@ -152,14 +157,38 @@ public class MainFrame extends JFrame {
 
     //ao clicar no menu, abre uma nova tela de gerar novo grafo
     private void newgActionPerformed(java.awt.event.ActionEvent evt) {
-        TelaNewGraph g = new TelaNewGraph();
+        TelaRandomGraph g = new TelaRandomGraph(this.graphController);
+//        g.setVisible(true);
         mainPane.removeAll();
         mainPane.add(g);
         pack();
     }
 
     private void GraphMakerActionPerformed(java.awt.event.ActionEvent evt) {
+        getContentPane().removeAll();
+        this.setSize(800, 800);
+        mainPane = new javax.swing.JPanel();
+        mainPane.setSize(800, 800);
+        getContentPane().add(mainPane);
+        mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.LINE_AXIS));
 
+        mainPane.add(new GraphComponent(graphController));
+//
+//        System.out.println(".");
+//        for (Component component : mainPane.getComponents()) {
+//            component.setVisible(false);
+//            mainPane.remove(component);
+//        }
+////        repaint();
+////        try {
+////            Thread.sleep(1000);
+////        } catch (InterruptedException e) {
+////            e.printStackTrace();
+////        }
+//        final GraphComponent comp = new GraphComponent(graphController);
+//        mainPane.add(comp);
+//        comp.setPreferredSize(new Dimension(800, 800));
+//        pack();
     }
 
     public static void main(String args[]) {

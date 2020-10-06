@@ -1,29 +1,52 @@
 package controllers;
 
+import models.Graph;
+import models.SearchStep;
+import models.Vertex;
+
+import java.util.List;
+
 public class GraphController {
-    Graph g = new Graph();
 
-    Vertex getVertex(){
-        return g.keySet;
+    private Graph<Integer> currentGraph;
+
+    public GraphController() {
+        this.currentGraph = Graph.generateRandomGraph();
     }
 
-    List<T> getEdges(Vertex v){
-        return v.adjList;
+    public void addEdge(Vertex<Integer> from, Vertex<Integer> to) {
+        this.currentGraph.addEdge(from, to);
     }
 
-    private void insertVertex(Vertex v){     
-        if(g.addVertex(v);){
-            System.out.println("Vertex add successfully");
-        }else{
-            System.out.println("Error, vertex not add");
-        }        
+    public void addVertex(Vertex<Integer> vertex) {
+        this.currentGraph.addVertex(vertex);
     }
 
-    private void insertEdges(Vertex v, Vertex u){
-        if(g.addEdges(v, u)){
-            System.out.println("Edge add successfully");
-        }else{
-            System.out.println("Error, edge not add");
-        }        
+    public Iterable<Vertex<Integer>> getVertices() {
+        return this.currentGraph.getVertices();
+    }
+
+    public Iterable<Vertex<Integer>> getAdjacentVertices(Vertex<Integer> vertex) {
+        return this.currentGraph.getAdjacentVertices(vertex);
+    }
+
+    public void generateNewGraph() {
+        this.currentGraph = Graph.generateRandomGraph();
+    }
+
+    public void emptyGraph(boolean isDirected) {
+        this.currentGraph = new Graph<>(isDirected);
+    }
+
+    public int numberOfVertices() {
+        return this.currentGraph.numberOfVertices();
+    }
+
+    public List<SearchStep<Integer>> getSearchSequence() {
+        return this.currentGraph.dfs();
+    }
+
+    public boolean isDirected() {
+        return this.currentGraph.isDirected();
     }
 }
