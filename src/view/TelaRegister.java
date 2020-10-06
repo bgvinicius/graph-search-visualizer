@@ -62,6 +62,10 @@ public class TelaRegister extends javax.swing.JPanel {
             }
         });
 
+        int numArestas = Integer.parseInt(Arestas.getText());
+        int numVertices = Integer.parseInt(Vertices.getText());
+        boolean gDirigido = GrafoDirigido.setSelected();
+
         RegisterButton.setText("Cadastrar");
         RegisterButton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         RegisterButton.addActionListener(new java.awt.event.ActionListener() {
