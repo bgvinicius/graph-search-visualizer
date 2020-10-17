@@ -152,10 +152,10 @@ public class GraphComponent extends JPanel {
 
     public static double[][] gerarCoordenadas(int n) {
         double[][] coordenadas = new double[2][n];
-        double x,y, r = 1, ang = 0;
+        double x,y,ang, r = 1;
 
         for (int i = 0; i < n; i++) {
-            ang = (((360 / n) * i) * Math.PI / 180);
+            ang = (((360d / n) * i) * Math.PI / 180);
             x = r * Math.cos(ang);
             y = r * Math.sin(ang);
 

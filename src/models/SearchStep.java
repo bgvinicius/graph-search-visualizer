@@ -1,7 +1,5 @@
 package models;
 
-import java.util.*;
-
 public class SearchStep<T> {
     private final Vertex<T> vertex;
     private final SearchState prevState;

@@ -13,7 +13,7 @@ public class VertexComponent {
     private final int value;
     private final Vertex<Integer> vertex;
     private final boolean isDirected;
-    private List<VertexComponent> adjacentVertices = new ArrayList<>();
+    private final List<VertexComponent> adjacentVertices = new ArrayList<>();
 
     public VertexComponent(int x, int y, Vertex<Integer> vertex, boolean isDirected) {
         this.xCord = x;
