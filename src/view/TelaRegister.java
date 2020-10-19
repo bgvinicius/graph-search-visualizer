@@ -6,6 +6,7 @@ import view.graph.GraphComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 // TODO: improve variables naming
 public class TelaRegister extends javax.swing.JPanel {
@@ -110,7 +111,8 @@ public class TelaRegister extends javax.swing.JPanel {
     }
 
     private void ArestasActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        final String arestas = Arestas.getText();
+        StringReader(arestas);
     }
 
     private void RegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,4 +133,29 @@ public class TelaRegister extends javax.swing.JPanel {
 //        container.add(graphComponent);
 //        Arestas.getText();
     }
+    
+    void StringReader(String a){
+    //função array que recebe uma string e salva em um vetor
+    ArrayList<String> aresta = new ArrayList<String>();
+
+    int i;
+    for(i=0; i<a.length();i++){
+        char aux = a.charAt(i);
+        String x = Character.toString(aux);
+        if(! x.equals(",")){
+            aresta.add(x);
+        }
+    }
+    int num1;
+    int num2;
+    for(i=0; i<aresta.size(); i++){
+        if(aresta.get(i).equals(")")){
+            num1 = Integer.parseInt(aresta.get(i-2));
+            num2 = Integer.parseInt(aresta.get(i-1));
+            this.graphController.addEdge(new Vertex<>(num1),new Vertex<>(num2));
+        
+        }
+    }
+    }
 }
+
