@@ -6,17 +6,15 @@ import java.util.*;
  * A graph class representing graph vertices as integers, using adjacency lists.
  */
 public class Graph<T> {
-    private final Map<Vertex<T>, List<Vertex<T>>> adjList; //lista de adjacências
+    private final Map<Vertex<T>, List<Vertex<T>>> adjList; //adjacency list
 
-    //    private final HashMap<Vertex<T>, String> colors; //um dicionário que mapeia um vértice à sua cor
-    private final boolean isDirected;
+    private final boolean isDirected; //boolean indicating wether an instance is a digraph or not
 
     public Graph(boolean isDirected) {
         this.adjList = new HashMap<>();
-        //this.colors = new HashMap<>();
         this.isDirected = isDirected;
     }
-    
+// TODO: handle case where n < 5
 //    public Graph(boolean isDirected, int nVertexes) {
 //        this(isDirected);
 //        //if (nVertexes < 5)
@@ -44,10 +42,6 @@ public class Graph<T> {
         return this.adjList.getOrDefault(vertex, new ArrayList<>());
     }
 
-//    public HashMap getColors() {
-//        return this.colors;
-//    }
-
     public boolean isDirected() {
         return isDirected;
     }
@@ -56,51 +50,39 @@ public class Graph<T> {
         if (this.adjList.keySet().size() >= 25)
             return false;
         this.adjList.put(vertex, new ArrayList<>());
-//        this.colors.put(this.adjList.keySet().size(), "branco");
         return true;
     }
 
+    //a method for adding an edge to a graph by giving 2 vertices, for digraphs its assumed that the first vertex is the source
     public boolean addEdge(final Vertex<T> v, final Vertex<T> u) {
         if (!(this.adjList.containsKey(v)) || !(this.adjList.containsKey(u)))
             return false;
-        if (this.adjList.get(v) == null)
-            this.adjList.put(v, new ArrayList<>());
+        this.adjList.computeIfAbsent(v, k -> new ArrayList<>());
         if (this.adjList.get(v).contains(u))
             return false;
         this.adjList.get(v).add(u);
         return true;
     }
 
+    // generate a random graph using integers as vertices
     public static Graph<Integer> generateRandomGraph() {
-        // generate random graph using integers as vertex
         final Random random = new Random();
         final Graph<Integer> graph = new Graph<>(random.nextBoolean());
-        /*
-        int i;
-        final int j = random.nextInt(21) + 5; //gerando entre 5 e 25 vértices aleatoriamente
-        final int k = random.nextInt(626); //gerando entre 0 e 625 (25²) arestas aleatoriamente
-        for (i = 0; i < j; i++)
-            graph.addVertex(new Vertex<>(j));
-        for (i = 0; i < k; i++) {
-            graph.addEdge(new Vertex<>(random.nextInt(26)),
-                    new Vertex<>(random.nextInt(26)));
-        }
-        */
 
-        int nVertexes = random.nextInt(21) + 5; //Gerando entre 5 e 25 vértices aleatoriamente
+        int nVertexes = random.nextInt(21) + 5; //Generating between 5 and 25 vertices randomly
         int maxEdges;
 
         for (int i = 0; i < nVertexes; i++) {
             graph.addVertex(new Vertex<>(i));
         }
 
-        if (graph.isDirected()) maxEdges = (int) (nVertexes * (nVertexes - 1));
-        else maxEdges = (int) (nVertexes * (nVertexes - 1) / 2);
-
+        if (graph.isDirected()) //Limiting the edges based on the boolean isDirected (digraphs have double the max ammount of edges)
+            maxEdges = nVertexes * (nVertexes - 1);
+        else
+            maxEdges = nVertexes * (nVertexes - 1) / 2;
         int nEdges = random.nextInt(maxEdges + 1);
 
         List<List<Vertex<Integer>>> edges = new ArrayList<>();
-//        Vertex<Integer> edges[][] = new Vertex<>[maxEdges][2];
 
         if (graph.isDirected()) {
             for (Vertex<Integer> v : graph.adjList.keySet()) {
@@ -114,7 +96,7 @@ public class Graph<T> {
                     }
                 }
             }
-        }
+        } 
         else {
             for (Vertex<Integer> v : graph.adjList.keySet()) {
                 for (Vertex<Integer> u : graph.adjList.keySet()) {
@@ -145,6 +127,7 @@ public class Graph<T> {
         return graph;
     }
 
+    //a recursive method to visit a vertex and its descendants used by dfs
     private void visitVertex(Vertex<T> vertex, Set<Vertex<T>> foundVertex, List<SearchStep<T>> searchSteps) {
         foundVertex.add(vertex);
 
@@ -163,6 +146,7 @@ public class Graph<T> {
         searchSteps.add(new SearchStep<>(vertex, SearchState.FINISHED));
     }
 
+    //depth first search implementation
     public List<SearchStep<T>> dfs() {
         final Set<Vertex<T>> foundVertex = new HashSet<>();
         final List<SearchStep<T>> searchSteps = new LinkedList<>();
@@ -180,6 +164,7 @@ public class Graph<T> {
         return searchSteps;
     }
 
+    //breadth first search implementation
     public List<SearchStep> bfs(Vertex<T> source) {
         final Set<Vertex<T>> foundVertex = new HashSet<>();
         final List<SearchStep> searchSteps = new LinkedList<>();
