@@ -1,22 +1,22 @@
 package view;
 
 import controllers.GraphController;
+import models.Vertex;
 import view.graph.GraphComponent;
 
 import javax.swing.*;
 import java.awt.*;
 
-// TODO: clear me :(((
 public class MainFrame extends JFrame {
-
     private javax.swing.JButton logoButton;
     private javax.swing.JMenuBar menu;
     private javax.swing.JPanel mainPane;
     private javax.swing.JButton newGraphButton;
     private javax.swing.JButton registerButton;
-    private javax.swing.JButton searchButton;
-    private final GraphController graphController;
+    private javax.swing.JButton dfsSearchButton;
+    private javax.swing.JButton bfsSearchButton;
 
+    private final GraphController graphController;
 
     public MainFrame() {
         this.graphController = new GraphController();
@@ -31,25 +31,12 @@ public class MainFrame extends JFrame {
         logoButton = new javax.swing.JButton();
         newGraphButton = new javax.swing.JButton();
         registerButton = new javax.swing.JButton();
-        searchButton = new javax.swing.JButton();
+        dfsSearchButton = new javax.swing.JButton();
+        bfsSearchButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         mainPane.setBackground(new java.awt.Color(255, 255, 255));
-
-//        javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(mainPane);
-
-        // TODO: clear this
-        // desktop.setLayout(desktopLayout);
-//        desktopLayout.setHorizontalGroup(
-//            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//            .addGap(0, 464, Short.MAX_VALUE)
-//        );
-//        desktopLayout.setVerticalGroup(
-//            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//            .addGap(0, 322, Short.MAX_VALUE)
-//        );
-
         menu.setBackground(new java.awt.Color(204, 204, 204));
 
         logoButton.setBackground(new java.awt.Color(255, 255, 255));
@@ -59,7 +46,7 @@ public class MainFrame extends JFrame {
         logoButton.setFont(new java.awt.Font("Sylfaen", 0, 12)); // NOI18N
         logoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GraphMakerActionPerformed(evt);
+                handleLogoButtonClick(evt);
             }
         });
         menu.add(logoButton);
@@ -86,70 +73,79 @@ public class MainFrame extends JFrame {
         });
         menu.add(registerButton);
 
-        searchButton.setBackground(new java.awt.Color(204, 204, 204));
-        searchButton.setText("Iniciar busca");
-        searchButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        searchButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                searchStateChanged(evt);
-            }
-        });
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
+        dfsSearchButton.setBackground(new java.awt.Color(204, 204, 204));
+        dfsSearchButton.setText("Iniciar busca DFS");
+        dfsSearchButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        dfsSearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchActionPerformed(evt);
+                handleDfsSearch(evt);
             }
         });
-        menu.add(searchButton);
+
+        bfsSearchButton.setBackground(new java.awt.Color(204, 204, 204));
+        bfsSearchButton.setText("Iniciar busca BFS");
+        bfsSearchButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        bfsSearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleBfsSearch(evt);
+            }
+        });
+
+        menu.add(dfsSearchButton);
+        menu.add(bfsSearchButton);
 
         setJMenuBar(menu);
-
-        // TODO: remove this
-        //getContentPane().setLayout(layout);
-//        layout.setHorizontalGroup(
-//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//            .addComponent(desktop)
-//        );
-//        layout.setVerticalGroup(
-//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//            .addComponent(desktop)
-//        );
-
 
         this.setSize(800, 800);
         mainPane.setSize(800, 800);
         getContentPane().add(mainPane);
         final GraphComponent graphComponent = new GraphComponent(graphController);
         mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.LINE_AXIS));
-//        graphComponent.setBackground(new Color(157, 57, 20));
         mainPane.add(graphComponent);
         final JPanel jPanel = new JPanel();
         graphComponent.setPreferredSize(new Dimension(600, 600));
-//        jPanel.setBackground(new Color(0, 0, 0));
         jPanel.setMaximumSize(new Dimension(50, 2000));
         jPanel.setPreferredSize(new Dimension(50, 800));
-//        jPanel.setMinimumSize(new Dimension(200, 200));
 
         mainPane.add(jPanel);
-        //pack();
-    }// </editor-fold>
-
-    private void searchStateChanged(javax.swing.event.ChangeEvent evt) {
-        // TODO add your handling code here:
     }
 
     //ao clicar no menu, abre uma nova tela de cadastro
     private void registerActionPerformed(java.awt.event.ActionEvent evt) {
         TelaRegister reg = new TelaRegister(this.graphController);
-//        reg.setVisible(true);
         mainPane.removeAll();
         mainPane.add(reg);
         pack();
     }
 
-    //ao clicar no menu, abre uma nova tela de buscar
-    private void searchActionPerformed(java.awt.event.ActionEvent evt) {
-        TelaSearch s = new TelaSearch(this.graphController);
-//        s.setVisible(true);
+    //ao clicar no menu, abre uma nova tela de busca DFS
+    private void handleDfsSearch(java.awt.event.ActionEvent evt) {
+        AbstractSearchView s = new DFSSearchView(this.graphController);
+        mainPane.removeAll();
+        mainPane.add(s);
+        pack();
+    }
+
+    //ao clicar no menu, abre uma nova tela de de busca BFS
+    private void handleBfsSearch(java.awt.event.ActionEvent evt) {
+        final String source = JOptionPane.showInputDialog("Por favor, digite o número do vértice fonte da busca");
+
+        Integer parsedInteger;
+        try {
+            parsedInteger = Integer.parseInt(source);
+
+            if (!this.graphController.containsVertex(new Vertex<>(parsedInteger))) {
+                throw new Exception("Graph doesn't contain given vertex.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "O vertice deve ser um número.", "Fonte incorreta", JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "O vertice entrado deve pertencer ao grafo.", "Fonte invalida", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        AbstractSearchView s = new BFSSearchView(this.graphController, new Vertex<>(parsedInteger));
         mainPane.removeAll();
         mainPane.add(s);
         pack();
@@ -158,13 +154,12 @@ public class MainFrame extends JFrame {
     //ao clicar no menu, abre uma nova tela de gerar novo grafo
     private void newgActionPerformed(java.awt.event.ActionEvent evt) {
         TelaRandomGraph g = new TelaRandomGraph(this.graphController);
-//        g.setVisible(true);
         mainPane.removeAll();
         mainPane.add(g);
         pack();
     }
 
-    private void GraphMakerActionPerformed(java.awt.event.ActionEvent evt) {
+    private void handleLogoButtonClick(java.awt.event.ActionEvent evt) {
         getContentPane().removeAll();
         this.setSize(800, 800);
         mainPane = new javax.swing.JPanel();
@@ -173,22 +168,6 @@ public class MainFrame extends JFrame {
         mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.LINE_AXIS));
 
         mainPane.add(new GraphComponent(graphController));
-//
-//        System.out.println(".");
-//        for (Component component : mainPane.getComponents()) {
-//            component.setVisible(false);
-//            mainPane.remove(component);
-//        }
-////        repaint();
-////        try {
-////            Thread.sleep(1000);
-////        } catch (InterruptedException e) {
-////            e.printStackTrace();
-////        }
-//        final GraphComponent comp = new GraphComponent(graphController);
-//        mainPane.add(comp);
-//        comp.setPreferredSize(new Dimension(800, 800));
-//        pack();
     }
 
     public static void main(String[] args) {
