@@ -63,9 +63,6 @@ public class GraphComponent extends JPanel {
             final Vertex<Integer> currentVertex = vertexComponent.getVertex();
             final Iterable<Vertex<Integer>> adjacentVertices = this.graphController.getAdjacentVertices(currentVertex);
 
-            if (adjacentVertices == null) {
-                System.out.println("a");
-            }
             for (Vertex<Integer> adjacentVertex : adjacentVertices) {
                 vertexComponent.addAdjacentVertex(vertexToVertexComponent.get(adjacentVertex));
             }
